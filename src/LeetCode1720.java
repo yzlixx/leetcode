@@ -27,7 +27,7 @@ public class LeetCode1720 {
      * 0 <= encoded[i] <= 105
      * 0 <= first <= 105
      */
-    public int[] decode(int[] encoded, int first) {
+    public static int[] decode(int[] encoded, int first) {
         // 异或的一些基本特性
         // arr[i]^arr[i+1] = encoded[i]
         // arr[i]^arr[i+1]^arr[i] = encoded[i]^arr[i];
@@ -44,5 +44,60 @@ public class LeetCode1720 {
         return arr;
     }
 
+    //*************************
+    //对数器
 
+    //生成长度maxLen,最大值为maxValue的数组
+    public static int[] randomArr(int maxLen, int maxValue) {
+        int len = (int) (Math.random()*maxLen-2)+2;
+        int[] arr = new int[len];
+        for (int i = 0; i < len; i++) {
+            arr[i] = (int) (Math.random() * maxValue);
+        }
+
+        return arr;
+    }
+
+    //生成encode数组
+    public static int[] encodeArr(int[] arr) {
+        int[] encodedArr = new int[arr.length - 1];
+
+        for (int i = 0; i < arr.length - 1; i++) {
+
+            encodedArr[i] = arr[i] ^ arr[i + 1];
+
+        }
+
+        return encodedArr;
+    }
+
+    //判断数组相等
+
+    public static boolean arrEqual(int[] arr1,int[] arr2){
+        if(arr1.length != arr2.length){
+            return false;
+        }
+
+        for (int i = 0; i < arr1.length ; i++) {
+            if(arr1[i] != arr2[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        int testNum = 100000;
+        int maxLen = 1000;
+        int maxValue = 10000;
+        for (int i = 0; i < testNum; i++) {
+            int[] arr = randomArr(maxLen, maxValue);
+            int[] encodedArr = encodeArr(arr);
+            int[] decodeArr = decode(encodedArr, arr[0]);
+            if(!arrEqual(arr,decodeArr)){
+                System.out.println("数组不等");
+            }
+
+        }
+    }
 }
