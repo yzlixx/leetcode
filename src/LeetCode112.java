@@ -47,15 +47,44 @@ public class LeetCode112 {
     }
 
     // [5,4,8,11,null,13,4,7,2,null,null,null,1]
+    private static boolean isSum = false;
     public boolean hasPathSum(TreeNode root, int targetSum) {
+
         if(root == null){
             return false;
         }
-        if (root.left == null && root.right == null) {
-            return targetSum == root.val;
-        }
-        return hasPathSum(root.left,targetSum-root.val) || hasPathSum(root.right,targetSum-root.val);
+        isSum = false;
+        process(root,targetSum,0);
+        return isSum;
     }
+
+    public void process(TreeNode node,int targetSum,int preSum){
+
+        //叶子节点
+        if(node.left == null && node.right ==null){
+            if(preSum+node.val == targetSum){
+                isSum = true;
+            }
+            return;
+        }
+
+        //非叶子结点
+        preSum +=node.val;
+        if(node.left != null){
+            process(node.left,targetSum,preSum);
+        }
+
+        if(node.right != null){
+            process(node.right,targetSum,preSum);
+        }
+
+    }
+
+
+
+
+
+
 
 
 
