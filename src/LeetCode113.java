@@ -68,6 +68,46 @@ public class LeetCode113 {
     }
 
 
+    public List<List<Integer>> pathSum2(TreeNode root, int targetSum) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if(root == null){
+            return ans;
+        }
+
+        ArrayList<Integer> path = new ArrayList<>();
+        process(root,targetSum,0,path,ans);
+        return ans;
+    }
+
+
+
+    public void process(TreeNode node,int targetSum,int preSum,ArrayList<Integer> path, List<List<Integer>> ans){
+        //叶子节点
+        if(node.left == null && node.right == null){
+            if(preSum+node.val == targetSum){
+                path.add(node.val);
+                List<Integer> copy = copy(path);
+                ans.add(copy);
+                path.remove(path.size()-1);
+            }
+        }
+
+        path.add(node.val);
+        preSum += node.val;
+
+        if(node.left != null){
+            process(node.left,targetSum,preSum,path,ans);
+        }
+
+        if(node.right != null){
+            process(node.right,targetSum,preSum,path,ans);
+        }
+
+        path.remove(path.size()-1);
+
+    }
+
+
     public void path(TreeNode node,int targetSum ,ArrayList<Integer> path, List<List<Integer>> ans){
 
 
