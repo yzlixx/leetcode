@@ -1,3 +1,5 @@
+package class04;
+
 /**
  * @author lixiaoxuan
  * @description: 归并排序O(N * logN)
@@ -93,7 +95,12 @@ public class Code_MergeSort {
             for (int i = 0; i < arr.length; i = i + 2 * step) {
                 merge(arr, i, Math.min(i + step - 1, arr.length - 1), Math.min(i + step * 2 - 1, arr.length - 1));
             }
+            //防止步长越界
+            if (step > arr.length / 2) {
+                break;
+            }
             step = step << 1;
+
         }
     }
 

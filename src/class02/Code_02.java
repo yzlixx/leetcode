@@ -11,8 +11,6 @@ public class Code_02 {
     public static void main(String[] args) {
         int[] arr = {1, 3, 1, 1, 1, 3, 3, 3, -17, -17, 6, 6, 6, 6};
         code05(arr,2,4);
-        String a  = "123456172345";
-        System.out.println(lengthOfLongestSubstring(a));
     }
 
     // 一个数组中有一种数出现了奇数次，其他数都出现了偶数次，怎么找到并打印这种数
@@ -69,26 +67,6 @@ public class Code_02 {
         System.out.println(result);
     }
 
-
-    //输出某个字符串中出现的不重复的最长的子串
-    public static int lengthOfLongestSubstring(String s) {
-        // 记录字符上一次出现的位置
-        int[] last = new int[128];
-        for(int i = 0; i < 128; i++) {
-            last[i] = -1;
-        }
-        int n = s.length();
-
-        int res = 0;
-        int start = 0;
-        for(int i = 0; i < n; i++) {
-            int index = s.charAt(i);
-            start = Math.max(start, last[index] + 1);
-            res = Math.max(res, i - start + 1);
-            last[index] = i;
-        }
-        return res;
-    }
 
 
 }
