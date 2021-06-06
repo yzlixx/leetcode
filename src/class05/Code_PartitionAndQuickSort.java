@@ -1,3 +1,5 @@
+package class05;
+
 import java.util.Arrays;
 
 /**
@@ -29,6 +31,8 @@ public class Code_PartitionAndQuickSort {
         int right = moreRangeL;
         int point = lessRangeR;
         //基准值
+        //随机快排，随机基准值
+        swap(arr,(int)(Math.random()*(moreRangeL-lessRangeR)+lessRangeR),moreRangeL);
         int partition = arr[moreRangeL];
         while (point < right) {
             if (arr[point] > partition) {
