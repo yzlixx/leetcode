@@ -1,10 +1,11 @@
 package class05;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * @author lixiaoxuan
- * @description: 快速排序
+ * @description: 快速排序+荷兰国旗问题
  * @date 2021/5/17 14:26
  */
 public class Code_PartitionAndQuickSort {
@@ -19,6 +20,11 @@ public class Code_PartitionAndQuickSort {
      * 交换大于基准值区域的头元素和尾元素， MoreRangeL与arr.length-1位置交换
      */
 
+//    荷兰国旗问题
+//
+//    给定一个数组arr，和一个整数num。请把小于num的数放在数组的左边，等于num的数放在中间，大于num的数放在数组的右边。
+
+
     public static void quickSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
@@ -32,7 +38,7 @@ public class Code_PartitionAndQuickSort {
         int point = lessRangeR;
         //基准值
         //随机快排，随机基准值
-        swap(arr,(int)(Math.random()*(moreRangeL-lessRangeR)+lessRangeR),moreRangeL);
+        swap(arr, (int) (Math.random() * (moreRangeL - lessRangeR + 1) + lessRangeR), moreRangeL);
         int partition = arr[moreRangeL];
         while (point < right) {
             if (arr[point] > partition) {
@@ -47,6 +53,7 @@ public class Code_PartitionAndQuickSort {
         return new int[]{left, right};
     }
 
+    //递归版本
     public static void process(int[] arr, int lessRangeR, int moreRangeL) {
         if (lessRangeR > moreRangeL) {
             return;
@@ -56,6 +63,39 @@ public class Code_PartitionAndQuickSort {
         process(arr, partition[1] + 1, moreRangeL);
 
     }
+
+    public static class Op {
+        public int l;
+        public int r;
+
+        public Op(int left, int right) {
+            l = left;
+            r = right;
+        }
+    }
+
+    //迭代版本
+    public static void quickSort2(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return;
+        }
+        int length = arr.length;
+        swap(arr, (int) (Math.random() * length), length - 1);
+        int[] partition = partition(arr, 0, length - 1);
+        Stack<Op> stack = new Stack<>();
+        stack.push(new Op(0, partition[0] - 1));
+        stack.push(new Op(partition[1] + 1, length - 1));
+        while (!stack.empty()) {
+            Op pop = stack.pop();
+            //判断边界
+            if (pop.l < pop.r) {
+                int[] partition1 = partition(arr, pop.l, pop.r);
+                stack.push(new Op(pop.l, partition1[0] - 1));
+                stack.push(new Op(partition1[1] + 1, pop.r - 1));
+            }
+        }
+    }
+
 
     public static void swap(int[] arr, int index1, int index2) {
         int tmp = arr[index1];
@@ -75,7 +115,8 @@ public class Code_PartitionAndQuickSort {
             int[] arr3 = copyArray(arr1);
             Arrays.sort(arr2);
             quickSort(arr3);
-            if (!isEqual(arr2, arr3)) {
+            quickSort2(arr1);
+            if (!isEqual(arr2, arr3) && !isEqual(arr2, arr1)) {
                 System.out.println("error");
                 succeed = false;
                 break;
