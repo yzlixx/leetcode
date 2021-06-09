@@ -97,13 +97,14 @@ public class HeapGreater<T> {
         int left = index * 2 + 1;
         while (left < size) {
             // 获取左右叶节点的最小值
-            int minIndex = left + 1 < size ? (comparator.compare(heap.get(left), heap.get(left + 1)) < 0 ? left : left + 1) : left;
-            int min = comparator.compare(heap.get(index), heap.get(minIndex)) < 0 ? index : minIndex;
-            if (min == index) {
+            int best = left + 1 < size ? (comparator.compare(heap.get(left), heap.get(left + 1)) < 0 ? left : left + 1) : left;
+            best = comparator.compare(heap.get(best), heap.get(index)) < 0 ? best : index;
+            if (best == index) {
                 break;
-            } else {
-                swap(index, min);
             }
+            swap(index, best);
+            index = best;
+            left = index * 2 + 1;
         }
     }
 

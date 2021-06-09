@@ -227,8 +227,8 @@ public class Code02_EveryStepShowBoss {
 
     public static void main(String[] args) {
         int maxValue = 10;
-        int maxLen = 20;
-        int maxK = 3;
+        int maxLen = 100;
+        int maxK = 6;
         int testTimes = 1000000;
         System.out.println("测试开始");
         for (int i = 0; i < testTimes; i++) {
@@ -251,10 +251,15 @@ public class Code02_EveryStepShowBoss {
         }
         System.out.println("测试结束");
 
-//        int[] arr = new int[]{2,0,2};
-//        boolean[] op = new boolean[]{true,true,false};
-//        List<List<Integer>> ans = topK2(arr, op, 2);
-//        System.out.println(ans);
+//        int[] arr = new int[]{9, 6, 0, 9, 5, 0, 3, 9,1,2,1,1,5,1,2};
+//        boolean[] op = new boolean[]{true, true, false, false, true, true, true, false,true,true,true,false,false,false,false};
+//        for (int j = 0; j < arr.length; j++) {
+//            System.out.println(arr[j] + " , " + op[j]);
+//        }
+//        List<List<Integer>> ans1 = topK1(arr, op, 1);
+//        List<List<Integer>> ans2 = topK2(arr, op, 1);
+//        System.out.println(ans1);
+//        System.out.println(ans2);
 
     }
 
@@ -263,7 +268,7 @@ public class Code02_EveryStepShowBoss {
         List<List<Integer>> ans = new ArrayList<>();
         WhosYourDaddy whosYourDaddy = new WhosYourDaddy(k);
         for (int i = 0; i < arr.length; i++) {
-            whosYourDaddy.operate1(i, arr[i], op[i]);
+            whosYourDaddy.operate(i, arr[i], op[i]);
             ans.add(whosYourDaddy.getDaddy());
         }
 
@@ -273,8 +278,8 @@ public class Code02_EveryStepShowBoss {
 
     private static class WhosYourDaddy {
         int top;
-        private HeapGreater<Customer> candHeap ;
-        private HeapGreater<Customer> daddyHeap ;
+        private HeapGreater<Customer> candHeap;
+        private HeapGreater<Customer> daddyHeap;
         private HashMap<Integer, Customer> customers;
 
         public WhosYourDaddy(int top) {
@@ -286,31 +291,31 @@ public class Code02_EveryStepShowBoss {
 
         public void operate1(int time, int id, boolean buyOrReturn) {
 
-            if(!buyOrReturn && !customers.containsKey(id)){
+            if (!buyOrReturn && !customers.containsKey(id)) {
                 return;
             }
-            if(!customers.containsKey(id)){
-                customers.put(id,new Customer(id,0,0));
+            if (!customers.containsKey(id)) {
+                customers.put(id, new Customer(id, 0, 0));
             }
             Customer c = customers.get(id);
-            if(buyOrReturn){
+            if (buyOrReturn) {
                 c.buy++;
-            }else {
+            } else {
                 c.buy--;
             }
-            if(c.buy == 0) {
+            if (c.buy == 0) {
                 customers.remove(id);
             }
-            if(!candHeap.contains(c) && !daddyHeap.contains(c)){
-                if(daddyHeap.size()<top){
+            if (!candHeap.contains(c) && !daddyHeap.contains(c)) {
+                if (daddyHeap.size() < top) {
                     c.enterTime = time;
                     daddyHeap.push(c);
-                }else {
+                } else {
                     c.enterTime = time;
                     candHeap.push(c);
                 }
             }
-            if(c.buy == 0){
+            if (c.buy == 0) {
                 candHeap.remove(c);
                 daddyHeap.remove(c);
             }
@@ -358,18 +363,18 @@ public class Code02_EveryStepShowBoss {
         }
 
         private void daddyMove(int time) {
-            if(candHeap.isEmpty()){
+            if (candHeap.isEmpty()) {
                 return;
             }
 
-            if(daddyHeap.size()<top){
+            if (daddyHeap.size() < top) {
                 Customer c1 = candHeap.pop();
                 c1.enterTime = time;
                 daddyHeap.push(c1);
-            }else{
+            } else {
                 Customer c1 = candHeap.peek();
                 Customer c2 = daddyHeap.peek();
-                if(c1.buy>c2.buy){
+                if (c1.buy > c2.buy) {
                     c1.enterTime = time;
                     c2.enterTime = time;
                     daddyHeap.pop();
